@@ -9,6 +9,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ExpressServiceImpl implements ExpressService {
+    /**
+     * 查询用户货物的物流状态
+     * @param expressTrack
+     * @return
+     */
     @Override
     public ExpressInfoDTO getExpressInfoByCodeAndNo(ExpressTrackDTO expressTrack) {
         if (expressTrack.getExpressCode()==null){
