@@ -2,6 +2,7 @@ package com.mall4j.cloud.express.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.nacos.shaded.com.google.gson.Gson;
+import com.mall4j.cloud.api.order.feign.OrderFeignClient;
 import com.mall4j.cloud.common.exception.Mall4cloudException;
 import com.mall4j.cloud.express.dto.ExpressInfoDTO;
 import com.mall4j.cloud.express.dto.ExpressRspDTO;
@@ -18,6 +19,8 @@ import java.util.List;
 public class ExpressServiceImpl implements ExpressService {
     @Autowired
     ExpressTrackMapper expressTrackMapper;
+    @Autowired
+    OrderFeignClient orderFeignClient;
 
     /**
      * 查询用户货物的物流状态
@@ -51,6 +54,7 @@ public class ExpressServiceImpl implements ExpressService {
 
         String expressNo = expressTrackDTO.getExpressNo();
         if (expressTrackDTO.getExpressCode().equals("SFEXPRESS")){
+            //todo:通过Feign来查询订单物流的相关信息
         }
 
 
