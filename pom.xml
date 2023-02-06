@@ -22,6 +22,7 @@
         <module>mall4cloud-user</module>
         <module>mall4cloud-order</module>
         <module>mall4cloud-payment</module>
+        <module>mall4cloud-express</module>
     </modules>
     <packaging>pom</packaging>
 
