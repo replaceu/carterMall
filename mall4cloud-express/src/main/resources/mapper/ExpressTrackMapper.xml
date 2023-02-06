@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mall4j.cloud.express.mapper.ExpressTrackMapper">
+    <resultMap id="expressTrackMap" type="com.mall4j.cloud.express.model.ExpressTrack">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="express_code" jdbcType="VARCHAR" property="expressCode" />
+        <result column="express_no" jdbcType="VARCHAR" property="expressNo" />
+        <result column="delivery_status" jdbcType="VARCHAR" property="deliveryStatus" />
+        <result column="express_track" jdbcType="LONGVARCHAR" property="expressTrack" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, express_code, express_no, delivery_status, express_track, create_date, update_date
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="expressTrackMap">
+        select
+        <include refid="Base_Column_List" />
+        from foreo_mall_express_track
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from foreo_mall_express_track
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.mall4j.cloud.express.model.ExpressTrack">
+        insert into foreo_mall_express_track (
+        id
+        , express_code
+        , express_no
+        , delivery_status
+        , express_track
+        , create_date
+        , update_date
+        )
+        values (
+        #{id,jdbcType=VARCHAR}
+        , #{expressCode,jdbcType=VARCHAR}
+        , #{expressNo,jdbcType=VARCHAR}
+        , #{deliveryStatus,jdbcType=VARCHAR}
+        , #{expressTrack,jdbcType=LONGVARCHAR}
+        , #{createDate,jdbcType=TIMESTAMP}
+        , #{updateDate,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.mall4j.cloud.express.model.ExpressTrack">
+        insert into foreo_mall_express_track
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id!='' ">
+                id,
+            </if>
+            <if test="expressCode != null and expressCode!='' ">
+                express_code,
+            </if>
+            <if test="expressNo != null and expressNo!='' ">
+                express_no,
+            </if>
+            <if test="deliveryStatus != null and deliveryStatus!='' ">
+                delivery_status,
+            </if>
+            <if test="expressTrack != null and expressTrack!='' ">
+                express_track,
+            </if>
+            <if test="createDate != null ">
+                create_date,
+            </if>
+            <if test="updateDate != null ">
+                update_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id!='' ">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="expressCode != null and expressCode!='' ">
+                #{expressCode,jdbcType=VARCHAR},
+            </if>
+            <if test="expressNo != null and expressNo!='' ">
+                #{expressNo,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryStatus != null and deliveryStatus!='' ">
+                #{deliveryStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="expressTrack != null and expressTrack!='' ">
+                #{expressTrack,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="createDate != null ">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null ">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.mall4j.cloud.express.model.ExpressTrack">
+        update foreo_mall_express_track
+        set
+        id = #{id,jdbcType=VARCHAR}
+        , express_code = #{expressCode,jdbcType=VARCHAR}
+        , express_no = #{expressNo,jdbcType=VARCHAR}
+        , delivery_status = #{deliveryStatus,jdbcType=VARCHAR}
+        , express_track = #{expressTrack,jdbcType=LONGVARCHAR}
+        , create_date = #{createDate,jdbcType=TIMESTAMP}
+        , update_date = #{updateDate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.mall4j.cloud.express.model.ExpressTrack">
+        update foreo_mall_express_track
+        <set>
+            <if test="id != null and id!='' ">
+                id = #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="expressCode != null and expressCode!='' ">
+                express_code = #{expressCode,jdbcType=VARCHAR},
+            </if>
+            <if test="expressNo != null and expressNo!='' ">
+                express_no = #{expressNo,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryStatus != null and deliveryStatus!='' ">
+                delivery_status = #{deliveryStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="expressTrack != null and expressTrack!='' ">
+                express_track = #{expressTrack,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="createDate != null ">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null ">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectBySelective" parameterType="com.mall4j.cloud.express.model.ExpressTrack" resultMap="expressTrackMap">
+        select
+        <include refid="Base_Column_List" />
+        from foreo_mall_express_track
+        <where>
+            <if test="id != null and id!='' ">
+                and  id = #{id}
+            </if>
+            <if test="expressCode != null and expressCode!='' ">
+                and  express_code = #{expressCode}
+            </if>
+            <if test="expressNo != null and expressNo!='' ">
+                and  express_no = #{expressNo}
+            </if>
+            <if test="deliveryStatus != null and deliveryStatus!='' ">
+                and  delivery_status = #{deliveryStatus}
+            </if>
+            <if test="expressTrack != null and expressTrack!='' ">
+                and  express_track = #{expressTrack}
+            </if>
+            <if test="createDate != null  ">
+                and  create_date = #{createDate}
+            </if>
+            <if test="updateDate != null  ">
+                and  update_date = #{updateDate}
+            </if>
+        </where>
+    </select>
+
+</mapper>

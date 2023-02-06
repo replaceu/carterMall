@@ -5,5 +5,6 @@ import com.mall4j.cloud.express.dto.ExpressRspDTO;
 import com.mall4j.cloud.express.dto.ExpressTrackDTO;
 
 public interface ExpressService {
+
     ExpressInfoDTO getExpressInfoByCodeAndNo(ExpressTrackDTO expressTrack);
 }

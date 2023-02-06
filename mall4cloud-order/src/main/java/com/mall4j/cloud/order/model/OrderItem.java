@@ -82,6 +82,32 @@ public class OrderItem extends BaseModel implements Serializable{
      */
     private Long spuTotalAmount;
 
+	/**
+	 * 同步快递信息
+	 */
+	private String syncOsExpress;
+
+	/**
+	 * 同步快递单号
+	 */
+	private String syncOsExpressNo;
+
+	public String getSyncOsExpressNo() {
+		return syncOsExpressNo;
+	}
+
+	public void setSyncOsExpressNo(String syncOsExpressNo) {
+		this.syncOsExpressNo = syncOsExpressNo == null ? null : syncOsExpressNo.trim();
+	}
+
+	public String getSyncOsExpress() {
+		return syncOsExpress;
+	}
+
+	public void setSyncOsExpress(String syncOsExpress) {
+		this.syncOsExpress = syncOsExpress == null ? null : syncOsExpress.trim();
+	}
+
 	public Long getOrderItemId() {
 		return orderItemId;
 	}

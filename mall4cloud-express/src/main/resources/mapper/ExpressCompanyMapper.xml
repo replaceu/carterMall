@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall4j.cloud.express.mapper.ExpressCompanyMapper">
+    <resultMap id="BaseResultMap" type="com.mall4j.cloud.express.model.ExpressCompany">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="express_name" jdbcType="VARCHAR" property="expressName" />
+        <result column="express_code" jdbcType="VARCHAR" property="expressCode" />
+        <result column="sort" jdbcType="SMALLINT" property="sort" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+        <result column="logo" jdbcType="VARCHAR" property="logo" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, express_name, express_code, sort, create_date, is_deleted, logo
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from foreo_mall_express_company
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from foreo_mall_express_company
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.mall4j.cloud.express.model.ExpressCompany">
+        insert into foreo_mall_express_company (
+                                                 id
+                                               , express_name
+                                               , express_code
+                                               , sort
+                                               , create_date
+                                               , is_deleted
+                                               , logo
+        )
+        values (
+                   #{id,jdbcType=VARCHAR}
+               , #{expressName,jdbcType=VARCHAR}
+               , #{expressCode,jdbcType=VARCHAR}
+               , #{sort,jdbcType=SMALLINT}
+               , #{createDate,jdbcType=TIMESTAMP}
+               , #{isDeleted,jdbcType=BIT}
+               , #{logo,jdbcType=VARCHAR}
+               )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.mall4j.cloud.express.model.ExpressCompany">
+        insert into foreo_mall_express_company
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id!='' ">
+                id,
+            </if>
+            <if test="expressName != null and expressName!='' ">
+                express_name,
+            </if>
+            <if test="expressCode != null and expressCode!='' ">
+                express_code,
+            </if>
+            <if test="sort != null ">
+                sort,
+            </if>
+            <if test="createDate != null ">
+                create_date,
+            </if>
+            <if test="isDeleted != null ">
+                is_deleted,
+            </if>
+            <if test="logo != null and logo!='' ">
+                logo,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id!='' ">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="expressName != null and expressName!='' ">
+                #{expressName,jdbcType=VARCHAR},
+            </if>
+            <if test="expressCode != null and expressCode!='' ">
+                #{expressCode,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null ">
+                #{sort,jdbcType=SMALLINT},
+            </if>
+            <if test="createDate != null ">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDeleted != null ">
+                #{isDeleted,jdbcType=BIT},
+            </if>
+            <if test="logo != null and logo!='' ">
+                #{logo,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.mall4j.cloud.express.model.ExpressCompany">
+        update foreo_mall_express_company
+        set
+            id = #{id,jdbcType=VARCHAR}
+          , express_name = #{expressName,jdbcType=VARCHAR}
+          , express_code = #{expressCode,jdbcType=VARCHAR}
+          , sort = #{sort,jdbcType=SMALLINT}
+          , create_date = #{createDate,jdbcType=TIMESTAMP}
+          , is_deleted = #{isDeleted,jdbcType=BIT}
+          , logo = #{logo,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.mall4j.cloud.express.model.ExpressCompany">
+        update foreo_mall_express_company
+        <set>
+            <if test="id != null and id!='' ">
+                id = #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="expressName != null and expressName!='' ">
+                express_name = #{expressName,jdbcType=VARCHAR},
+            </if>
+            <if test="expressCode != null and expressCode!='' ">
+                express_code = #{expressCode,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null ">
+                sort = #{sort,jdbcType=SMALLINT},
+            </if>
+            <if test="createDate != null ">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDeleted != null ">
+                is_deleted = #{isDeleted,jdbcType=BIT},
+            </if>
+            <if test="logo != null and logo!='' ">
+                logo = #{logo,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectBySelective" parameterType="com.mall4j.cloud.express.model.ExpressCompany" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from foreo_mall_express_company
+        <where>
+            <if test="id != null and id!='' ">
+                and  id = #{id}
+            </if>
+            <if test="expressName != null and expressName!='' ">
+                and  express_name = #{expressName}
+            </if>
+            <if test="expressCode != null and expressCode!='' ">
+                and  express_code = #{expressCode}
+            </if>
+            <if test="sort != null  ">
+                and  sort = #{sort}
+            </if>
+            <if test="createDate != null  ">
+                and  create_date = #{createDate}
+            </if>
+            <if test="isDeleted != null  ">
+                and  is_deleted = #{isDeleted}
+            </if>
+            <if test="logo != null and logo!='' ">
+                and  logo = #{logo}
+            </if>
+        </where>
+    </select>
+    <select id="queryExpressCompanyPages" parameterType="com.mall4j.cloud.express.model.ExpressCompany" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from foreo_mall_express_company
+        <where>
+            is_deleted =0
+            <if test="expressName != null and expressName != ''">
+                and  express_name like concat('%', #{expressName}, '%')
+            </if>
+            <if test="expressCode != null and expressCode != ''">
+                and express_code like concat('%', #{expressCode}, '%')
+            </if>
+        </where>
+        order by sort DESC
+    </select>
+
+</mapper>
