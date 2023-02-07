@@ -64,4 +64,5 @@ public interface OrderItemMapper {
 	 */
 	Integer countByOrderId(@Param("orderId") Long orderId);
 
+    List<OrderItem> selectOrderItemByExpress(@Param("expressNo") String expressNo, @Param("expressCode") String expressCode);
 }

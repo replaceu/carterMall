@@ -1,5 +1,6 @@
 package com.mall4j.cloud.order.service;
 
+import com.mall4j.cloud.api.order.bo.ExpressOrderItemBO;
 import com.mall4j.cloud.order.model.OrderItem;
 import org.apache.ibatis.annotations.Param;
 
@@ -63,4 +64,6 @@ public interface OrderItemService {
 	 * @return
 	 */
 	Integer countByOrderId(@Param("orderId") Long orderId);
+
+    List<ExpressOrderItemBO> getOrderItemsByExpress(@Param("expressNo") String expressNo, @Param("expressCode") String expressCode);
 }

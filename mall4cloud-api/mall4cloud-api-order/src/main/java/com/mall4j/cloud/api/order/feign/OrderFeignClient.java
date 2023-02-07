@@ -64,4 +64,7 @@ public interface OrderFeignClient {
      */
     @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/updateOrderState")
     ServerResponseEntity<Void> updateOrderState(@RequestParam("orderIds") List<Long> orderIds);
+
+
+
 }

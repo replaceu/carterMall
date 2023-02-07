@@ -17,6 +17,8 @@
         <result column="pic" property="pic"/>
         <result column="delivery_type" property="deliveryType"/>
         <result column="shop_cart_time" property="shopCartTime"/>
+        <result column="sync_os_express" jdbcType="VARCHAR" property="syncOsExpress"/>
+        <result column="sync_os_express_no" jdbcType="VARCHAR" property="syncOsExpressNo"/>
         <result column="price" property="price"/>
         <result column="spu_total_amount" property="spuTotalAmount"/>
     </resultMap>
@@ -37,11 +39,13 @@
         `delivery_type`,
         `shop_cart_time`,
         `price`,
-        `spu_total_amount`
+        `spu_total_amount`,
+        `sync_os_express`,
+        `sync_os_express_no`
     </sql>
     <insert id="save">
         insert into order_item (`shop_id`, `order_id`, `spu_id`, `sku_id`, `user_id`, `count`,
-                                `spu_name`, `sku_name`, `pic`,  `delivery_type`,
+                                `spu_name`, `sku_name`, `pic`, `delivery_type`,
                                 `shop_cart_time`, `price`, `spu_total_amount`)
         values (#{orderItem.shopId}, #{orderItem.orderId}, #{orderItem.spuId}, #{orderItem.skuId}, #{orderItem.userId},
                 #{orderItem.count}, #{orderItem.spuName}, #{orderItem.skuName}, #{orderItem.pic},
@@ -123,5 +127,10 @@
         SELECT COUNT(*)
         FROM order_item
         WHERE order_id = #{orderId}
+    </select>
+    <select id="selectOrderItemByExpress" resultType="com.mall4j.cloud.order.model.OrderItem">
+        select
+        <include refid="Vo_Column_List"/>
+        from order_item where sync_os_express=#{expressCode} and sync_os_express_no=#{expressNo}
     </select>
 </mapper>

@@ -1,13 +1,16 @@
 package com.mall4j.cloud.order.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import com.mall4j.cloud.api.order.bo.ExpressOrderItemBO;
 import com.mall4j.cloud.order.model.OrderItem;
 import com.mall4j.cloud.order.mapper.OrderItemMapper;
 import com.mall4j.cloud.order.service.OrderItemService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,6 +61,20 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Override
     public Integer countByOrderId(Long orderId) {
         return orderItemMapper.countByOrderId(orderId);
+    }
+
+    @Override
+    public List<ExpressOrderItemBO> getOrderItemsByExpress(String expressNo, String expressCode) {
+        List<ExpressOrderItemBO> retList = new ArrayList<>();
+        List<OrderItem> orderItemList = orderItemMapper.selectOrderItemByExpress(expressNo,expressCode);
+        if (!CollUtil.isEmpty(orderItemList)){
+            for (OrderItem orderItem : orderItemList) {
+                ExpressOrderItemBO expressOrderItemBO = new ExpressOrderItemBO();
+                BeanUtils.copyProperties(orderItem,expressOrderItemBO);
+                retList.add(expressOrderItemBO);
+            }
+        }
+        return retList;
     }
 
 
