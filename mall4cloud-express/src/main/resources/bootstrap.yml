@@ -19,3 +19,8 @@ spring:
         password: ${spring.cloud.nacos.discovery.password}
   profiles:
     active: @profiles.active@
+
+express:
+  host: https://wuliu.market.alicloudapi.com
+  path: /kdi
+  appcode: 1d367d8faad14e66a56419f6292151c3

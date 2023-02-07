@@ -7,4 +7,8 @@ import java.util.List;
 
 public interface ExpressTrackMapper {
     List<ExpressTrack> selectBySelective(ExpressTrack expressTrack);
+
+    void insertSelective(ExpressTrack expressTrack);
+
+    int updateByPrimaryKeySelective(ExpressTrack expressTrack);
 }
