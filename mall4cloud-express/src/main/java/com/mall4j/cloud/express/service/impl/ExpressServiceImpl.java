@@ -137,8 +137,6 @@ public class ExpressServiceImpl implements ExpressService {
         } catch (Exception e) {
             logger.error(e.getClass().getSimpleName(), e.getMessage());
         }
-
-
-        return null;
+        return expressInfo;
     }
 }
