@@ -31,7 +31,7 @@ public class ExpressInfoDTO {
 	 * 1.是否签收
 	 */
 	@ApiModelProperty("1.是否签收")
-	String								issign;
+	String								isSign;
 	/**
 	 * 快递公司
 	 */
@@ -95,12 +95,12 @@ public class ExpressInfoDTO {
 		this.deliverystatus = deliverystatus;
 	}
 
-	public String getIssign() {
-		return issign;
+	public String getIsSign() {
+		return isSign;
 	}
 
-	public void setIssign(String issign) {
-		this.issign = issign;
+	public void setIsSign(String isSign) {
+		this.isSign = isSign == null ? null : isSign.trim();
 	}
 
 	public String getExpName() {

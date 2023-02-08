@@ -142,6 +142,6 @@ public class ExpressServiceImpl implements ExpressService {
 
     @Override
     public void doExpressOsSync() {
-
+        expressTrackMapper.selectBySelective()
     }
 }
