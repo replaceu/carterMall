@@ -139,4 +139,9 @@ public class ExpressServiceImpl implements ExpressService {
         }
         return expressInfo;
     }
+
+    @Override
+    public void doExpressOsSync() {
+
+    }
 }
