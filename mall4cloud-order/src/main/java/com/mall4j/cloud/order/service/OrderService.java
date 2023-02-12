@@ -1,6 +1,7 @@
 package com.mall4j.cloud.order.service;
 
 import com.mall4j.cloud.api.order.bo.EsOrderBO;
+import com.mall4j.cloud.api.order.bo.OrderExpressBO;
 import com.mall4j.cloud.api.order.bo.OrderSimpleAmountInfoBO;
 import com.mall4j.cloud.api.order.bo.OrderStatusBO;
 import com.mall4j.cloud.api.order.dto.DeliveryOrderDTO;
@@ -135,4 +136,6 @@ public interface OrderService {
 	 * @return
 	 */
 	OrderCountVO countNumberOfStatus(Long userId);
+
+    List<OrderExpressBO> getDeliveredOrder();
 }

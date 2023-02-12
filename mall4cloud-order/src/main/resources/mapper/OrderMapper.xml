@@ -259,4 +259,10 @@
                COUNT(CASE WHEN o.status = 5 THEN o.order_id ELSE NULL END)        AS success
         FROM `order` o WHERE o.user_id = #{userId} AND o.delete_status = 0
     </select>
+    <select id="selectDeliveredOrder" resultType="com.mall4j.cloud.api.order.bo.OrderExpressBO">
+        select <include refid="Vo_Column_List"/>
+        from `order` where status='3'
+
+    </select>
+
 </mapper>

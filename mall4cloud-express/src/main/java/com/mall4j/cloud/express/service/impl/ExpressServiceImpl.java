@@ -4,7 +4,9 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.nacos.shaded.com.google.gson.Gson;
 import com.mall4j.cloud.api.order.bo.ExpressOrderItemBO;
 import com.mall4j.cloud.api.order.bo.OrderAddressBo;
+import com.mall4j.cloud.api.order.bo.OrderExpressBO;
 import com.mall4j.cloud.api.order.feign.OrderAddrFeignClient;
+import com.mall4j.cloud.api.order.feign.OrderFeignClient;
 import com.mall4j.cloud.api.order.feign.OrderItemFeignClient;
 import com.mall4j.cloud.common.exception.Mall4cloudException;
 import com.mall4j.cloud.common.response.ServerResponseEntity;
@@ -44,6 +46,8 @@ public class ExpressServiceImpl implements ExpressService {
     OrderItemFeignClient orderItemFeignClient;
     @Autowired
     OrderAddrFeignClient orderAddrFeignClient;
+    @Autowired
+    OrderFeignClient orderFeignClient;
 
     Logger logger = LoggerFactory.getLogger(ExpressServiceImpl.class);
 
@@ -142,6 +146,15 @@ public class ExpressServiceImpl implements ExpressService {
 
     @Override
     public void doExpressOsSync() {
+        //todo：获取所有需要处理的已经发货的订单
+        ServerResponseEntity<List<OrderExpressBO>> deliveredOrderList = orderFeignClient.getDeliveredOrder();
+        if (!deliveredOrderList.isSuccess()){
+            return;
+        }else {
+            List<OrderExpressBO> deliveredOrderListData = deliveredOrderList.getData();
+            for (OrderExpressBO deliveredOrder : deliveredOrderListData) {
 
+            }
+        }
     }
 }

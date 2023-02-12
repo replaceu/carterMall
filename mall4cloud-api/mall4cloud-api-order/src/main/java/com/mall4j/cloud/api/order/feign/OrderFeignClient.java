@@ -1,6 +1,7 @@
 package com.mall4j.cloud.api.order.feign;
 
 import com.mall4j.cloud.api.order.bo.EsOrderBO;
+import com.mall4j.cloud.api.order.bo.OrderExpressBO;
 import com.mall4j.cloud.api.order.bo.OrderStatusBO;
 import com.mall4j.cloud.api.order.bo.OrderSimpleAmountInfoBO;
 import com.mall4j.cloud.api.order.vo.OrderAmountVO;
@@ -64,6 +65,10 @@ public interface OrderFeignClient {
      */
     @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/updateOrderState")
     ServerResponseEntity<Void> updateOrderState(@RequestParam("orderIds") List<Long> orderIds);
+
+
+    @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX+"/insider/getDeliveredOrder")
+    ServerResponseEntity<List<OrderExpressBO>> getDeliveredOrder();
 
 
 

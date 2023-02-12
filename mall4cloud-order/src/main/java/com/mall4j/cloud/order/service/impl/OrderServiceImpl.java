@@ -3,6 +3,7 @@ package com.mall4j.cloud.order.service.impl;
 import cn.hutool.core.collection.CollectionUtil;
 import com.mall4j.cloud.api.leaf.feign.SegmentFeignClient;
 import com.mall4j.cloud.api.order.bo.EsOrderBO;
+import com.mall4j.cloud.api.order.bo.OrderExpressBO;
 import com.mall4j.cloud.api.order.bo.OrderSimpleAmountInfoBO;
 import com.mall4j.cloud.api.order.bo.OrderStatusBO;
 import com.mall4j.cloud.api.order.constant.DeliveryType;
@@ -323,5 +324,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderCountVO countNumberOfStatus(Long userId) {
         return orderMapper.countNumberOfStatus(userId);
+    }
+
+    @Override
+    public List<OrderExpressBO> getDeliveredOrder() {
+        return orderMapper.selectDeliveredOrder();
     }
 }

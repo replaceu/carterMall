@@ -1,6 +1,7 @@
 package com.mall4j.cloud.order.mapper;
 
 import com.mall4j.cloud.api.order.bo.EsOrderBO;
+import com.mall4j.cloud.api.order.bo.OrderExpressBO;
 import com.mall4j.cloud.api.order.bo.OrderSimpleAmountInfoBO;
 import com.mall4j.cloud.api.order.bo.OrderStatusBO;
 import com.mall4j.cloud.api.order.vo.OrderAmountVO;
@@ -143,4 +144,6 @@ public interface OrderMapper {
 	 * @return
 	 */
     OrderCountVO countNumberOfStatus(@Param("userId") Long userId);
+
+    List<OrderExpressBO> selectDeliveredOrder();
 }

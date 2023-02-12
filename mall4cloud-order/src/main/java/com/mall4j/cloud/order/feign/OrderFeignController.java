@@ -2,6 +2,7 @@ package com.mall4j.cloud.order.feign;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.mall4j.cloud.api.order.bo.EsOrderBO;
+import com.mall4j.cloud.api.order.bo.OrderExpressBO;
 import com.mall4j.cloud.api.order.bo.OrderSimpleAmountInfoBO;
 import com.mall4j.cloud.api.order.bo.OrderStatusBO;
 import com.mall4j.cloud.api.order.constant.OrderStatus;
@@ -65,5 +66,11 @@ public class OrderFeignController implements OrderFeignClient {
     @Override
     public ServerResponseEntity<Void> updateOrderState(List<Long> orderIds) {
         return null;
+    }
+
+    @Override
+    public ServerResponseEntity<List<OrderExpressBO>> getDeliveredOrder() {
+        List<OrderExpressBO> orderExpressList = orderService.getDeliveredOrder();
+        return ServerResponseEntity.success(orderExpressList);
     }
 }
