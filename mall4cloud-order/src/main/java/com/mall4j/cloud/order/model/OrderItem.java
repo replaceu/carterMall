@@ -92,6 +92,19 @@ public class OrderItem extends BaseModel implements Serializable{
 	 */
 	private String syncOsExpressNo;
 
+	/**
+	 * os返回的发货时间
+	 */
+	private Date syncOsDeliveryTime;
+
+	public Date getSyncOsDeliveryTime() {
+		return syncOsDeliveryTime;
+	}
+
+	public void setSyncOsDeliveryTime(Date syncOsDeliveryTime) {
+		this.syncOsDeliveryTime = syncOsDeliveryTime;
+	}
+
 	public String getSyncOsExpressNo() {
 		return syncOsExpressNo;
 	}

@@ -85,6 +85,47 @@ public class OrderExpressBO {
      */
     private Integer deleteStatus;
 
+    /**
+     * 同步快递信息
+     */
+    private String syncOsExpress;
+
+    /**
+     * 同步快递单号
+     */
+    private String syncOsExpressNo;
+
+
+    /**
+     * os返回的发货时间
+     */
+    private Date syncOsDeliveryTime;
+
+
+    public Date getSyncOsDeliveryTime() {
+        return syncOsDeliveryTime;
+    }
+
+    public void setSyncOsDeliveryTime(Date syncOsDeliveryTime) {
+        this.syncOsDeliveryTime = syncOsDeliveryTime;
+    }
+
+    public String getSyncOsExpress() {
+        return syncOsExpress;
+    }
+
+    public void setSyncOsExpress(String syncOsExpress) {
+        this.syncOsExpress = syncOsExpress == null ? null : syncOsExpress.trim();
+    }
+
+    public String getSyncOsExpressNo() {
+        return syncOsExpressNo;
+    }
+
+    public void setSyncOsExpressNo(String syncOsExpressNo) {
+        this.syncOsExpressNo = syncOsExpressNo == null ? null : syncOsExpressNo.trim();
+    }
+
     public Long getOrderId() {
         return orderId;
     }

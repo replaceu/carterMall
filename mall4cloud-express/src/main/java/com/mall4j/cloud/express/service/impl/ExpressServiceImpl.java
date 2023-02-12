@@ -48,6 +48,8 @@ public class ExpressServiceImpl implements ExpressService {
     OrderAddrFeignClient orderAddrFeignClient;
     @Autowired
     OrderFeignClient orderFeignClient;
+    @Autowired
+    ExpressService expressService;
 
     Logger logger = LoggerFactory.getLogger(ExpressServiceImpl.class);
 
@@ -148,11 +150,28 @@ public class ExpressServiceImpl implements ExpressService {
     public void doExpressOsSync() {
         //todo：获取所有需要处理的已经发货的订单
         ServerResponseEntity<List<OrderExpressBO>> deliveredOrderList = orderFeignClient.getDeliveredOrder();
-        if (!deliveredOrderList.isSuccess()){
+        if (!deliveredOrderList.isSuccess()) {
             return;
-        }else {
+        } else {
             List<OrderExpressBO> deliveredOrderListData = deliveredOrderList.getData();
             for (OrderExpressBO deliveredOrder : deliveredOrderListData) {
+                ExpressTrackDTO expressTrackDTO = new ExpressTrackDTO();
+                expressTrackDTO.setExpressCode(deliveredOrder.getSyncOsExpress());
+                expressTrackDTO.setExpressNo(deliveredOrder.getSyncOsExpressNo());
+                ExpressInfoDTO expressInfo = expressService.getExpressInfoByCodeAndNo(expressTrackDTO);
+                if (expressInfo != null) {
+                    String deliveryStatus = expressInfo.getDeliverystatus();
+                    String isSign = expressInfo.getIsSign();
+                    if (isSign.equals("1") && deliveryStatus.equals("3")) {
+                        //todo:这是签收的状态，签收后七天给用户增加积分，或者活动奖励
+                        try {
+
+                        }catch (Exception e){
+                            throw new Mall4cloudException("发放奖励过程出错");
+                        }
+
+                    }
+                }
 
             }
         }
