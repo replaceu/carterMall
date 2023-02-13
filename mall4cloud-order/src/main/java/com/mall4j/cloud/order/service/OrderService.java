@@ -138,4 +138,6 @@ public interface OrderService {
 	OrderCountVO countNumberOfStatus(Long userId);
 
     List<OrderExpressBO> getDeliveredOrder();
+
+    void updateExpressOrder(List<Long> orderIdList);
 }

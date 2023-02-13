@@ -330,4 +330,9 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderExpressBO> getDeliveredOrder() {
         return orderMapper.selectDeliveredOrder();
     }
+
+    @Override
+    public void updateExpressOrder(List<Long> orderIdList) {
+
+    }
 }
