@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mall4cloud-express</artifactId>
-    <description>mall4cloud快递系统</description>
+    <artifactId>mall4cloud-integral</artifactId>
+    <description>mall4cloud 会员积分服务</description>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -29,11 +29,6 @@
         <dependency>
             <groupId>com.mall4j.cloud</groupId>
             <artifactId>mall4cloud-common-database</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.mall4j.cloud</groupId>
-            <artifactId>mall4cloud-common-rocketmq</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -97,7 +92,6 @@
             <artifactId>xxl-job-core</artifactId>
             <version>2.3.0</version>
         </dependency>
-
     </dependencies>
 
     <build>

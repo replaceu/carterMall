@@ -1,7 +1,6 @@
 package com.mall4j.cloud.api.order.bo;
 
 import java.util.Date;
-import java.util.List;
 
 public class OrderExpressBO {
     /**
@@ -101,31 +100,6 @@ public class OrderExpressBO {
      */
     private Date syncOsDeliveryTime;
 
-
-    public Date getSyncOsDeliveryTime() {
-        return syncOsDeliveryTime;
-    }
-
-    public void setSyncOsDeliveryTime(Date syncOsDeliveryTime) {
-        this.syncOsDeliveryTime = syncOsDeliveryTime;
-    }
-
-    public String getSyncOsExpress() {
-        return syncOsExpress;
-    }
-
-    public void setSyncOsExpress(String syncOsExpress) {
-        this.syncOsExpress = syncOsExpress == null ? null : syncOsExpress.trim();
-    }
-
-    public String getSyncOsExpressNo() {
-        return syncOsExpressNo;
-    }
-
-    public void setSyncOsExpressNo(String syncOsExpressNo) {
-        this.syncOsExpressNo = syncOsExpressNo == null ? null : syncOsExpressNo.trim();
-    }
-
     public Long getOrderId() {
         return orderId;
     }
@@ -190,7 +164,6 @@ public class OrderExpressBO {
         this.orderAddrId = orderAddrId;
     }
 
-
     public Integer getCloseType() {
         return closeType;
     }
@@ -253,5 +226,29 @@ public class OrderExpressBO {
 
     public void setDeleteStatus(Integer deleteStatus) {
         this.deleteStatus = deleteStatus;
+    }
+
+    public String getSyncOsExpress() {
+        return syncOsExpress;
+    }
+
+    public void setSyncOsExpress(String syncOsExpress) {
+        this.syncOsExpress = syncOsExpress == null ? null : syncOsExpress.trim();
+    }
+
+    public String getSyncOsExpressNo() {
+        return syncOsExpressNo;
+    }
+
+    public void setSyncOsExpressNo(String syncOsExpressNo) {
+        this.syncOsExpressNo = syncOsExpressNo == null ? null : syncOsExpressNo.trim();
+    }
+
+    public Date getSyncOsDeliveryTime() {
+        return syncOsDeliveryTime;
+    }
+
+    public void setSyncOsDeliveryTime(Date syncOsDeliveryTime) {
+        this.syncOsDeliveryTime = syncOsDeliveryTime;
     }
 }

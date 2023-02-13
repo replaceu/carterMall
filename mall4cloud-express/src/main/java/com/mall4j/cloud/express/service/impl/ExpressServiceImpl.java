@@ -10,6 +10,7 @@ import com.mall4j.cloud.api.order.feign.OrderFeignClient;
 import com.mall4j.cloud.api.order.feign.OrderItemFeignClient;
 import com.mall4j.cloud.common.exception.Mall4cloudException;
 import com.mall4j.cloud.common.response.ServerResponseEntity;
+import com.mall4j.cloud.common.rocketmq.config.RocketMqConstant;
 import com.mall4j.cloud.express.dto.ExpressInfoDTO;
 import com.mall4j.cloud.express.dto.ExpressRspDTO;
 import com.mall4j.cloud.express.dto.ExpressTrackDTO;
@@ -17,10 +18,12 @@ import com.mall4j.cloud.express.mapper.ExpressTrackMapper;
 import com.mall4j.cloud.express.model.ExpressTrack;
 import com.mall4j.cloud.express.service.ExpressService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.messaging.support.GenericMessage;
 import org.springframework.stereotype.Service;
 
 import jodd.http.HttpBrowser;
@@ -50,6 +53,8 @@ public class ExpressServiceImpl implements ExpressService {
     OrderFeignClient orderFeignClient;
     @Autowired
     ExpressService expressService;
+    @Autowired
+    RocketMQTemplate integralPointUpdateTemplate;
 
     Logger logger = LoggerFactory.getLogger(ExpressServiceImpl.class);
 
@@ -154,6 +159,8 @@ public class ExpressServiceImpl implements ExpressService {
             return;
         } else {
             List<OrderExpressBO> deliveredOrderListData = deliveredOrderList.getData();
+
+            List<Long> orderIdList = new ArrayList<>();
             for (OrderExpressBO deliveredOrder : deliveredOrderListData) {
                 ExpressTrackDTO expressTrackDTO = new ExpressTrackDTO();
                 expressTrackDTO.setExpressCode(deliveredOrder.getSyncOsExpress());
@@ -164,15 +171,18 @@ public class ExpressServiceImpl implements ExpressService {
                     String isSign = expressInfo.getIsSign();
                     if (isSign.equals("1") && deliveryStatus.equals("3")) {
                         //todo:这是签收的状态，签收后七天给用户增加积分，或者活动奖励
-                        try {
-
-                        }catch (Exception e){
-                            throw new Mall4cloudException("发放奖励过程出错");
-                        }
-
+                        orderIdList.add(deliveredOrder.getOrderId());
                     }
                 }
 
+            }
+
+            try {
+                //todo：更新订单的状态
+                orderFeignClient.updateExpressOrder(orderIdList);
+                integralPointUpdateTemplate.syncSend(RocketMqConstant.INTEGRAL_POINT_UPDATE_TOPIC,new GenericMessage<List<Long>>(orderIdList));
+            }catch (Exception e){
+                throw new Mall4cloudException("发放奖励过程出错");
             }
         }
     }

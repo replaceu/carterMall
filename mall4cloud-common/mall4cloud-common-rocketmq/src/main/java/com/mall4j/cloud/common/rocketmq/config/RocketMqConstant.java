@@ -45,6 +45,11 @@ public class RocketMqConstant {
      */
     public static final String CANAL_TOPIC = "canal-topic";
 
+    /**
+     * 用户收到商品，会员积分更新
+     */
+    public static final String INTEGRAL_POINT_UPDATE_TOPIC = "integral-point-update-topic";
+
 
 
 }

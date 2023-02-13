@@ -73,4 +73,10 @@ public class OrderFeignController implements OrderFeignClient {
         List<OrderExpressBO> orderExpressList = orderService.getDeliveredOrder();
         return ServerResponseEntity.success(orderExpressList);
     }
+
+    @Override
+    public ServerResponseEntity<Void> updateExpressOrder(List<Long> orderIdList) {
+        
+        return null;
+    }
 }

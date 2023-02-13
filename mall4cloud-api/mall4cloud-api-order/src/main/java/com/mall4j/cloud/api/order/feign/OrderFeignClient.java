@@ -7,6 +7,7 @@ import com.mall4j.cloud.api.order.bo.OrderSimpleAmountInfoBO;
 import com.mall4j.cloud.api.order.vo.OrderAmountVO;
 import com.mall4j.cloud.common.feign.FeignInsideAuthConfig;
 import com.mall4j.cloud.common.response.ServerResponseEntity;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -67,9 +68,19 @@ public interface OrderFeignClient {
     ServerResponseEntity<Void> updateOrderState(@RequestParam("orderIds") List<Long> orderIds);
 
 
+    /**
+     * 查询已经发货的订单
+     * @return
+     */
     @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX+"/insider/getDeliveredOrder")
     ServerResponseEntity<List<OrderExpressBO>> getDeliveredOrder();
 
 
-
+    /**
+     * 更新订单的物流状态
+     * @param orderIdList
+     * @return
+     */
+    @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX+"/insider/updateExpressOrder")
+    ServerResponseEntity<Void> updateExpressOrder(@Param("orderIdList") List<Long> orderIdList);
 }
