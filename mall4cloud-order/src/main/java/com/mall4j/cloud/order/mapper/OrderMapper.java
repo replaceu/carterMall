@@ -146,4 +146,6 @@ public interface OrderMapper {
     OrderCountVO countNumberOfStatus(@Param("userId") Long userId);
 
     List<OrderExpressBO> selectDeliveredOrder();
+
+    Order selectOrderById(@Param("orderId") Long orderId);
 }

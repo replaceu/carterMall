@@ -174,7 +174,6 @@ public class ExpressServiceImpl implements ExpressService {
                         orderIdList.add(deliveredOrder.getOrderId());
                     }
                 }
-
             }
 
             try {

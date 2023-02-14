@@ -86,6 +86,11 @@
             <artifactId>mall4cloud-api-biz</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.mall4j.cloud</groupId>
+            <artifactId>mall4cloud-common-rocketmq</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.xuxueli/xxl-job-core -->
         <dependency>
             <groupId>com.xuxueli</groupId>

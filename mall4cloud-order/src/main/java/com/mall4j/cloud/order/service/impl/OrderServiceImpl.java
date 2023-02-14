@@ -37,6 +37,7 @@ import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.stereotype.Service;
@@ -333,6 +334,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void updateExpressOrder(List<Long> orderIdList) {
-
+        for (Long orderId : orderIdList) {
+            Order order = orderMapper.selectOrderById(orderId);
+            Order updateOrder = new Order();
+            BeanUtils.copyProperties(order,updateOrder);
+            updateOrder.setStatus(5);
+            orderMapper.update(updateOrder);
+        }
     }
 }
