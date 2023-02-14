@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall4j.cloud.integral.mapper.IntegralPointLogMapper">
+    <resultMap id="BaseResultMap" type="com.mall4j.cloud.integral.model.IntegralPointLog">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="lottery_id" jdbcType="VARCHAR" property="lotteryId"/>
+        <result column="log_title" jdbcType="VARCHAR" property="logTitle"/>
+        <result column="log_desc" jdbcType="VARCHAR" property="logDesc"/>
+        <result column="before_val" jdbcType="VARCHAR" property="beforeVal"/>
+        <result column="change_val" jdbcType="VARCHAR" property="changeVal"/>
+        <result column="current_val" jdbcType="VARCHAR" property="currentVal"/>
+        <result column="ref_type" jdbcType="VARCHAR" property="refType"/>
+        <result column="ref_val" jdbcType="VARCHAR" property="refVal"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="sku_id" jdbcType="VARCHAR" property="skuId"/>
+        <result column="used_val" jdbcType="VARCHAR" property="usedVal"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        , user_id, log_title, log_desc, before_val, change_val, current_val, ref_type, ref_val, create_date,lottery_id,
+        order_id, sku_id, used_val
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from foreo_integral_point_log
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from foreo_integral_point_log
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.mall4j.cloud.integral.model.IntegralPointLog">
+        insert into foreo_integral_point_log (id, user_id, before_val,
+                                              change_val, current_val, ref_type,
+                                              ref_val, create_date, order_id, sku_id, used_val)
+        values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{beforeVal,jdbcType=VARCHAR},
+                #{changeVal,jdbcType=VARCHAR}, #{currentVal,jdbcType=VARCHAR}, #{refType,jdbcType=VARCHAR},
+                #{refVal,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{orderId,jdbcType=VARCHAR},
+                #{skuId,jdbcType=VARCHAR}, #{usedVal,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.mall4j.cloud.integral.model.IntegralPointLog">
+        insert into ${integralSchema}.foreo_integral_point_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="lotteryId != null">
+                lottery_id,
+            </if>
+            <if test="logTitle != null">
+                log_title,
+            </if>
+            <if test="logDesc != null">
+                log_desc,
+            </if>
+            <if test="beforeVal != null">
+                before_val,
+            </if>
+            <if test="changeVal != null">
+                change_val,
+            </if>
+            <if test="usedVal != null">
+                used_val,
+            </if>
+            <if test="currentVal != null">
+                current_val,
+            </if>
+            <if test="refType != null">
+                ref_type,
+            </if>
+            <if test="refVal != null">
+                ref_val,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="skuId != null">
+                sku_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="lotteryId != null">
+                #{lotteryId,jdbcType=VARCHAR},
+            </if>
+            <if test="logTitle != null">
+                #{logTitle},
+            </if>
+            <if test="logDesc != null">
+                #{logDesc},
+            </if>
+            <if test="beforeVal != null">
+                #{beforeVal,jdbcType=VARCHAR},
+            </if>
+            <if test="changeVal != null">
+                #{changeVal,jdbcType=VARCHAR},
+            </if>
+            <if test="usedVal != null">
+                #{usedVal,jdbcType=VARCHAR},
+            </if>
+            <if test="currentVal != null">
+                #{currentVal,jdbcType=VARCHAR},
+            </if>
+            <if test="refType != null">
+                #{refType,jdbcType=VARCHAR},
+            </if>
+            <if test="refVal != null">
+                #{refVal,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="skuId != null">
+                #{skuId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <insert id="batchInsertIntegralPointLog" parameterType="java.util.List">
+        insert into ${integralSchema}.foreo_integral_point_log
+        (id,
+        user_id,
+        log_title,
+        lottery_id,
+        log_desc,
+        before_val,
+        change_val,
+        used_val,
+        current_val,
+        ref_type,
+        ref_val,
+        create_date,
+        order_id,
+        sku_id)
+        values
+        <foreach collection="toInsertList" item="item" index="index" separator=",">
+            (#{item.id},
+            #{item.userId},
+            #{item.logTitle,jdbcType=VARCHAR},
+            #{item.lotteryId,jdbcType=VARCHAR},
+            #{item.logDesc,jdbcType=VARCHAR},
+            #{item.beforeVal,jdbcType=VARCHAR},
+            #{item.changeVal,jdbcType=VARCHAR},
+            #{item.usedVal,jdbcType=VARCHAR},
+            #{item.currentVal,jdbcType=VARCHAR},
+            #{item.refType,jdbcType=VARCHAR},
+            #{item.refVal,jdbcType=VARCHAR},
+            #{item.createDate,jdbcType=TIMESTAMP},
+            #{item.orderId,jdbcType=VARCHAR},
+            #{item.skuId,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.mall4j.cloud.integral.model.IntegralPointLog">
+        update foreo_integral_point_log
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="lotteryId != null">
+                lottery_id = #{lotteryId,jdbcType=VARCHAR},
+            </if>
+            <if test="logTitle != null">
+                log_title = #{logTitle},
+            </if>
+            <if test="logDesc != null">
+                log_desc = #{logDesc},
+            </if>
+            <if test="beforeVal != null">
+                before_val = #{beforeVal,jdbcType=VARCHAR},
+            </if>
+            <if test="changeVal != null">
+                change_val = #{changeVal,jdbcType=VARCHAR},
+            </if>
+            <if test="usedVal != null">
+                used_val = #{usedVal,jdbcType=VARCHAR},
+            </if>
+            <if test="currentVal != null">
+                current_val = #{currentVal,jdbcType=VARCHAR},
+            </if>
+            <if test="refType != null">
+                ref_type = #{refType,jdbcType=VARCHAR},
+            </if>
+            <if test="refVal != null">
+                ref_val = #{refVal,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="skuId != null">
+                sku_id = #{skuId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="batchUpdatePointLogUsedVal">
+        update ${integralSchema}.foreo_integral_point_log
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="used_val = case" suffix="end,">
+                <foreach collection="logList" item="item" index="index">
+                    <if test="item.usedVal != null or item.usedVal != ''">
+                        when id=#{item.id} then #{item.usedVal}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach collection="logList" index="index" item="item" separator="," open="(" close=")">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <select id="selectUserIntegralPointLogList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from foreo_integral_point_log
+        where user_id = #{userId} order by create_date desc
+    </select>
+    <select id="selectUserIntegralPointByUserId" resultType="com.mall4j.cloud.integral.model.IntegralPointLog">
+        select
+        <include refid="Base_Column_List"/>
+        from foreo_integral_point_log
+        where user_id = #{userId} order by create_date desc
+    </select>
+
+    <select id="selectIntegralPointLogByUserIds" resultType="com.mall4j.cloud.integral.model.IntegralPointLog">
+        select
+        <include refid="Base_Column_List"/>
+        from foreo_integral_point_log
+        where user_id in
+        <foreach collection="userIdList" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+
+    </select>
+    <select id="selectByLigIds" resultType="java.lang.String">
+        select id
+        from foreo_integral_point_log
+        where id in
+        <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectByPrimaryKeys" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from foreo_integral_point_log
+        where ref_type = #{refType,jdbcType=VARCHAR}
+        AND user_id = #{userId,jdbcType=VARCHAR}
+        AND order_id = #{orderId,jdbcType=VARCHAR}
+        AND sku_id = #{skuId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectBySelective" parameterType="com.mall4j.cloud.integral.model.IntegralPointLog"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ${integralSchema}.foreo_integral_point_log
+        <where>
+            <if test="refVal != null and refVal != ''">
+                and ref_val = #{refVal}
+            </if>
+            <if test="orderId != null and orderId != ''">
+                and order_id =#{orderId}
+            </if>
+            <if test="userId != null and userId != ''">
+                and user_id =#{userId}
+            </if>
+            <if test="lotteryId != null and lotteryId != ''">
+                and lottery_id =#{lotteryId}
+            </if>
+            <if test="changeVal !=null and changeVal !=''">
+                and change_val = #{changeVal}
+            </if>
+        </where>
+        order by create_date DESC
+    </select>
+    <select id="selectUserPointLogInRefValueList" resultType="com.mall4j.cloud.integral.model.IntegralPointLog">
+        select
+        <include refid="Base_Column_List"/>
+        from ${integralSchema}.foreo_integral_point_log
+        where
+        user_id = #{userId}
+        and ref_val in
+        <foreach collection="refValueList" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        order by create_date asc
+    </select>
+
+    <select id="selectUserIntegralPointLogDistinctList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from (
+        select
+        <include refid="Base_Column_List"/>
+        from integral_db.foreo_integral_point_log
+        where user_id = #{userId}
+        and ref_type!='a_daily_checkin'
+        UNION
+        select
+        <include refid="Base_Column_List"/>
+        from integral_db.foreo_integral_point_log
+        where user_id = #{userId}
+        and ref_type ='a_daily_checkin'
+        group by before_val, DATE_FORMAT(create_date,'%Y-%m-%d')) a
+        order by a.create_date desc
+    </select>
+    <select id="selectAllUserIdList" resultType="java.lang.String">
+        select distinct (user_id)
+        from ${integralSchema}.foreo_integral_point_log
+    </select>
+    <select id="selectUserIdByRefTypeList" resultType="java.lang.String">
+        SELECT DISTINCT
+        (user_id)
+        FROM
+        ${integralSchema}.foreo_integral_point_log
+        WHERE
+        ref_type in
+        <foreach collection="refTypeList" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+    <select id="selectUserPointLogValid" resultType="com.mall4j.cloud.integral.model.IntegralPointLog">
+        select
+        <include refid="Base_Column_List"/>
+        from ${integralSchema}.foreo_integral_point_log
+        where  user_id=#{userId}
+        order by create_date asc
+    </select>
+    <select id="selectUserIdListValid" resultType="java.lang.String">
+        select distinct (user_id)
+        from ${integralSchema}.foreo_integral_point_log
+        where (used_val !='0' or used_val is null)
+        <![CDATA[and ADDDATE(create_date,365) <= now()]]>
+    </select>
+
+    <select id="sumSubIntegralPointByIdList" resultType="java.lang.Integer">
+        SELECT sum(IFNULL(change_val,'0')) - sum(IFNULL(used_val,'0'))
+        FROM
+        ${integralSchema}.foreo_integral_point_log
+        WHERE
+        id in
+        <foreach collection="logIdList" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        and (used_val != change_val
+        or used_val is null)
+        and ref_type!='c_point_expired'
+    </select>
+
+    <select id="selectUnbalanceAddPointLogByUserId" resultType="com.mall4j.cloud.integral.model.IntegralPointLog">
+        select
+        <include refid="Base_Column_List"/>
+        from ${integralSchema}.foreo_integral_point_log
+        where user_id=#{userId}
+        and (used_val != change_val
+        or used_val is null)
+        and cast(change_val as SIGNED)>0
+        order by create_date asc
+    </select>
+
+    <select id="selectAllUnDealSubLogs" resultType="com.mall4j.cloud.integral.model.IntegralPointLog">
+        select
+        <include refid="Base_Column_List"/>
+        from ${integralSchema}.foreo_integral_point_log
+        where cast(change_val as SIGNED) &lt; 0
+        and (used_val != change_val
+        or used_val is null)
+        and ref_type!='c_point_expired'
+        order by create_date asc
+    </select>
+
+    <select id="selectAllUnExpiredAddLogs" resultType="com.mall4j.cloud.integral.model.IntegralPointLog">
+        select
+        <include refid="Base_Column_List"/>
+        from ${integralSchema}.foreo_integral_point_log
+        <where>
+            cast(change_val as SIGNED) > 0
+            and (used_val != change_val
+            or used_val is null)
+            <if test="startDate != null and startDate != '' ">
+                and create_date &gt; #{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                and create_date &lt; #{endDate}
+            </if>
+        </where>
+        order by create_date asc
+    </select>
+
+</mapper>
