@@ -24,6 +24,7 @@
         <module>mall4cloud-payment</module>
         <module>mall4cloud-express</module>
         <module>mall4cloud-integral</module>
+        <module>mall4cloud-firmware</module>
     </modules>
     <packaging>pom</packaging>
 

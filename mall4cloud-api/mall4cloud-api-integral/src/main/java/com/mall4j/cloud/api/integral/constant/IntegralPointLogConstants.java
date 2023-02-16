@@ -1,11 +1,6 @@
 package com.mall4j.cloud.api.integral.constant;
 
 public interface IntegralPointLogConstants {
-    String subtract = "-";
-
-    String integralPointLog = "/integralPointLog";
-
-    String backendIntegralPointLog = "/backendIntegralPointLog";
 
     interface RefType {
         //活动签到
