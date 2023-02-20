@@ -57,8 +57,6 @@ import java.util.Objects;
 @Service
 public class OrderServiceImpl implements OrderService {
     private static final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
-
-
     @Autowired
     private OrderMapper orderMapper;
     @Autowired

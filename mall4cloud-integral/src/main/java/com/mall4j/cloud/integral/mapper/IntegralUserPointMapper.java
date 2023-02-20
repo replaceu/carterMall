@@ -8,15 +8,11 @@ import java.util.List;
 public interface IntegralUserPointMapper {
     int deleteByPrimaryKey(String id);
 
-    int insert(IntegralUserPoint record);
-
     int insertSelective(IntegralUserPoint record);
 
     IntegralUserPoint selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(IntegralUserPoint record);
-
-    int updateByPrimaryKey(IntegralUserPoint record);
 
     IntegralUserPoint selectOneByUserId(@Param("userId") String userId);
 

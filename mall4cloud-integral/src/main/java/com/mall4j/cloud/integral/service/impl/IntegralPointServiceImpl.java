@@ -53,7 +53,6 @@ public class IntegralPointServiceImpl implements IntegralPointService {
 				userPoint.setCreateDate(new Date());
 				userPoint.setVersion(pointList.get(0).getVersion());
 				integralUserPointMapper.updateByPrimaryKeySelective(userPoint);
-
 			}
 
 		}
