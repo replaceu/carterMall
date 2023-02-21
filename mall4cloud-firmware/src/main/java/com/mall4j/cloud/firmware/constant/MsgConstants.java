@@ -409,7 +409,7 @@ public class MsgConstants {
      * 42
      * @return
      */
-    public static String beyongLimitVol() {
+    public static String beyondLimitVol() {
 
         return "超出领取次数限制";
     }
@@ -418,7 +418,7 @@ public class MsgConstants {
      * 41
      * @return
      */
-    public static String firewareNotExist() {
+    public static String firmwareNotExist() {
 
         return "固件不存在";
     }
@@ -427,7 +427,7 @@ public class MsgConstants {
      * 40
      * @return
      */
-    public static String boxean() {
+    public static String boxEan() {
         return "您确定扫入的是盒装面膜的序列号吗？";
     }
 
@@ -435,7 +435,7 @@ public class MsgConstants {
      * 39
      * @return
      */
-    public static String fofoerror(String resultCode) {
+    public static String fofoError(String resultCode) {
         return "肌肤检测结果：" + resultCode + ",无法对应上R1-R8";
     }
 
@@ -499,7 +499,7 @@ public class MsgConstants {
      * 31
      * @return
      */
-    public static String serverbusy() {
+    public static String serverBusy() {
         return "服务器繁忙，请稍后再试";
     }
 
@@ -531,7 +531,7 @@ public class MsgConstants {
      * 27
      * @return
      */
-    public static String snActivedErr() {
+    public static String snActivatedErr() {
         return "该设备已被激活";
     }
 
@@ -555,7 +555,7 @@ public class MsgConstants {
         return "错误的mac";
     }
 
-    public static String stopedPoint() {
+    public static String stoppedPoint() {
         return "已停止发放魅力值";
     }
 }

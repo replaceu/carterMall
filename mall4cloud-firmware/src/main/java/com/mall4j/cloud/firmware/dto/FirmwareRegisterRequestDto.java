@@ -1,10 +1,15 @@
 package com.mall4j.cloud.firmware.dto;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class FirmwareRegisterRequestDto {
     private String mac;
 
     private String token;
 
+    @NotNull
+    @NotEmpty
     private String sn;
 
     private String email;
