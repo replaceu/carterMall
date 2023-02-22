@@ -57,4 +57,26 @@ public class IntegralPointServiceImpl implements IntegralPointService {
 
 		}
 	}
+
+    @Override
+    public void updateUserIntegralPoint(String userId, String point,String refType) {
+		List<IntegralUserPoint> pointList = integralUserPointMapper.selectByUserId(userId);
+		IntegralPointLog integralPointLog = new IntegralPointLog();
+		integralPointLog.setCreateDate(new Date());
+		integralPointLog.setId(UUID.randomUUID().toString());
+		integralPointLog.setBeforeVal(pointList.get(0).getIntegralPoint());
+		integralPointLog.setChangeVal(point);
+		integralPointLog.setCurrentVal(pointList.get(0).getIntegralPoint()+point);
+		integralPointLog.setRefType(refType);
+		integralPointLog.setLogDesc(IntegralPointLogConstants.RefTypeLogTitleEnum.getByRefType(refType).getLogTitle());
+		integralPointLog.setUserId(userId);
+		integralPointLogMapper.insertSelective(integralPointLog);
+		IntegralUserPoint userPoint = new IntegralUserPoint();
+		userPoint.setUserId(userId);
+		userPoint.setIntegralPoint(integralPointLog.getCurrentVal());
+		userPoint.setId(UUID.randomUUID().toString());
+		userPoint.setCreateDate(new Date());
+		userPoint.setVersion(pointList.get(0).getVersion());
+		integralUserPointMapper.updateByPrimaryKeySelective(userPoint);
+    }
 }

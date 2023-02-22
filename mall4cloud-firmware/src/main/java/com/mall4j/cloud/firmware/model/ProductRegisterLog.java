@@ -10,9 +10,9 @@ public class ProductRegisterLog {
      */
     private static final long serialVersionUID = 7216406514568703865L;
 
-    private Integer id;
+    private String id;
 
-    private Integer userId;
+    private String userId;
 
     private String skuSn;
 
@@ -63,24 +63,24 @@ public class ProductRegisterLog {
     //品牌名称
     private String brandName = "foreo";
 
-    public Integer getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
     }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
     public String getSkuSn() {

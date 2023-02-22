@@ -9,4 +9,6 @@ public interface IntegralPointService {
      * @param orderIdList
      */
     void updateUserIntegralPoint(List<Long> orderIdList);
+
+    void updateUserIntegralPoint(String userId, String point,String refType);
 }
