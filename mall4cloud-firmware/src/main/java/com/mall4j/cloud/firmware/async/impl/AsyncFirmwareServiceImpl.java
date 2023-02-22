@@ -8,6 +8,7 @@ import com.mall4j.cloud.firmware.model.ProductRegisterLog;
 import com.mall4j.cloud.firmware.service.ProductApiService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +19,7 @@ public class AsyncFirmwareServiceImpl implements AsyncFirmwareService {
     ProductRegisterLogMapper productRegisterLogMapper;
 
     @Override
+    @Async("asyncServiceExecutor")
     public void asyncOsRegister(ProductRegisterLog productRegisterLog, Long userId, String email, String sn) {
         String registerReturn = productApiService.callFirmwareRegister(userId, email, sn);
         String[] registerReturnWithCode = null;

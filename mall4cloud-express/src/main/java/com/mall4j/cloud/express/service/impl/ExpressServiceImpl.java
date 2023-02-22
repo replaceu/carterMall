@@ -30,159 +30,156 @@ import jodd.http.HttpBrowser;
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
 
-
 import java.util.*;
 
 @Service
 public class ExpressServiceImpl implements ExpressService {
-    @Value("${express.host}")
-    private String host;
-    @Value("${express.path}")
-    private String path;
-    @Value("${express.appcode}")
-    private String appcode;
-    private String method = "GET";
-    Map<String, String> headers = new HashMap<>();
-    @Autowired
-    ExpressTrackMapper expressTrackMapper;
-    @Autowired
-    OrderItemFeignClient orderItemFeignClient;
-    @Autowired
-    OrderAddrFeignClient orderAddrFeignClient;
-    @Autowired
-    OrderFeignClient orderFeignClient;
-    @Autowired
-    ExpressService expressService;
-    @Autowired
-    RocketMQTemplate integralPointUpdateTemplate;
+	@Value("${express.host}")
+	private String			host;
+	@Value("${express.path}")
+	private String			path;
+	@Value("${express.appcode}")
+	private String			appcode;
+	private String			method	= "GET";
+	Map<String, String>		headers	= new HashMap<>();
+	@Autowired
+	ExpressTrackMapper		expressTrackMapper;
+	@Autowired
+	OrderItemFeignClient	orderItemFeignClient;
+	@Autowired
+	OrderAddrFeignClient	orderAddrFeignClient;
+	@Autowired
+	OrderFeignClient		orderFeignClient;
+	@Autowired
+	ExpressService			expressService;
+	@Autowired
+	RocketMQTemplate		integralPointUpdateTemplate;
 
-    Logger logger = LoggerFactory.getLogger(ExpressServiceImpl.class);
+	Logger logger = LoggerFactory.getLogger(ExpressServiceImpl.class);
 
-    /**
-     * 查询用户货物的物流状态
-     *
-     * @param expressTrackDTO
-     * @return
-     */
-    @Override
-    public ExpressInfoDTO getExpressInfoByCodeAndNo(ExpressTrackDTO expressTrackDTO) {
-        ExpressInfoDTO expressInfo = new ExpressInfoDTO();
-        if (expressTrackDTO.getExpressCode() == null) {
-            throw new Mall4cloudException("获取快递公司名称失败");
-        }
-        ExpressTrack expressTrack = new ExpressTrack();
-        expressTrack.setExpressCode(expressTrackDTO.getExpressCode());
-        expressTrack.setExpressNo(expressTrack.getExpressNo());
-        List<ExpressTrack> expressTrackList = expressTrackMapper.selectBySelective(expressTrack);
-        String id = null;
-        Gson gson = new Gson();
-        if (!CollectionUtil.isEmpty(expressTrackList)) {
-            ExpressTrack mallExpressTrack = expressTrackList.get(0);
-            id = mallExpressTrack.getId();
-            long expired = 1000 * 60 * 30;
-            Boolean inThirtyMinutes = System.currentTimeMillis() - mallExpressTrack.getUpdateDate().getTime() < expired;
-            //三十分钟内再次查询 或者 已签收状态 走数据库查询
-            if (mallExpressTrack.getDeliveryStatus().equals("3") || inThirtyMinutes) {
-                String track = mallExpressTrack.getExpressTrack();
-                ExpressInfoDTO result = gson.fromJson(track, ExpressInfoDTO.class);
-                return result;
-            }
-        }
+	/**
+	 * 查询用户货物的物流状态
+	 *
+	 * @param expressTrackDTO
+	 * @return
+	 */
+	@Override
+	public ExpressInfoDTO getExpressInfoByCodeAndNo(ExpressTrackDTO expressTrackDTO) {
+		ExpressInfoDTO expressInfo = new ExpressInfoDTO();
+		if (expressTrackDTO.getExpressCode() == null) { throw new Mall4cloudException("获取快递公司名称失败"); }
+		ExpressTrack expressTrack = new ExpressTrack();
+		expressTrack.setExpressCode(expressTrackDTO.getExpressCode());
+		expressTrack.setExpressNo(expressTrack.getExpressNo());
+		List<ExpressTrack> expressTrackList = expressTrackMapper.selectBySelective(expressTrack);
+		String id = null;
+		Gson gson = new Gson();
+		if (!CollectionUtil.isEmpty(expressTrackList)) {
+			ExpressTrack mallExpressTrack = expressTrackList.get(0);
+			id = mallExpressTrack.getId();
+			long expired = 1000 * 60 * 30;
+			Boolean inThirtyMinutes = System.currentTimeMillis() - mallExpressTrack.getUpdateDate().getTime() < expired;
+			//三十分钟内再次查询 或者 已签收状态 走数据库查询
+			if (mallExpressTrack.getDeliveryStatus().equals("3") || inThirtyMinutes) {
+				String track = mallExpressTrack.getExpressTrack();
+				ExpressInfoDTO result = gson.fromJson(track, ExpressInfoDTO.class);
+				return result;
+			}
+		}
 
-        String searchExpressNo = expressTrackDTO.getExpressNo();
-        if (expressTrackDTO.getExpressCode().equals("SFEXPRESS")) {
-            //todo:通过Feign来查询订单物流的相关信息
-            try {
-                ServerResponseEntity<List<ExpressOrderItemBO>> expressInfoBo = orderItemFeignClient.getOrderItems(expressTrackDTO.getExpressNo(), expressTrackDTO.getExpressCode());
-                if (expressInfoBo.isSuccess()) {
-                    Long orderId = expressInfoBo.getData().get(0).getOrderId();
-                    List<Long> orderIdList = Arrays.asList(orderId);
-                    ServerResponseEntity<OrderAddressBo> orderAddrList = orderAddrFeignClient.getOrderExpressByOrderIdList(orderIdList);
-                    if (orderAddrList.isSuccess()) {
-                        searchExpressNo = expressTrackDTO.getExpressNo() + ":" + orderAddrList.getData().getMobile().substring(orderAddrList.getData().getMobile().length() - 4, orderAddrList.getData().getMobile().length());
-                    }
-                }
+		String searchExpressNo = expressTrackDTO.getExpressNo();
+		if (expressTrackDTO.getExpressCode().equals("SFEXPRESS")) {
+			//todo:通过Feign来查询订单物流的相关信息
+			try {
+				ServerResponseEntity<List<ExpressOrderItemBO>> expressInfoBo = orderItemFeignClient.getOrderItems(expressTrackDTO.getExpressNo(), expressTrackDTO.getExpressCode());
+				if (expressInfoBo.isSuccess()) {
+					Long orderId = expressInfoBo.getData().get(0).getOrderId();
+					List<Long> orderIdList = Arrays.asList(orderId);
+					ServerResponseEntity<OrderAddressBo> orderAddrList = orderAddrFeignClient.getOrderExpressByOrderIdList(orderIdList);
+					if (orderAddrList.isSuccess()) {
+						searchExpressNo = expressTrackDTO.getExpressNo() + ":" + orderAddrList.getData().getMobile().substring(orderAddrList.getData().getMobile().length() - 4, orderAddrList.getData().getMobile().length());
+					}
+				}
 
-            } catch (Exception e) {
-                throw new Mall4cloudException("获取快递信息错误！");
-            }
+			} catch (Exception e) {
+				throw new Mall4cloudException("获取快递信息错误！");
+			}
 
-        }
-        HttpBrowser browser = new HttpBrowser();
-        String param = "?type=" + expressTrackDTO.getExpressNo() + "&no=" + searchExpressNo;
+		}
+		HttpBrowser browser = new HttpBrowser();
+		String param = "?type=" + expressTrackDTO.getExpressNo() + "&no=" + searchExpressNo;
 
-        HttpRequest request = HttpRequest.get(host + path + param);
-        request.header("Authorization", "APPCODE " + appcode);
-        request.header("Content-type", "application/x-www-form-urlencoded");
+		HttpRequest request = HttpRequest.get(host + path + param);
+		request.header("Authorization", "APPCODE " + appcode);
+		request.header("Content-type", "application/x-www-form-urlencoded");
 
-        String expressJSON = null;
-        try {
-            logger.info(request.toString());
-            HttpResponse res = browser.sendRequest(request);
-            expressJSON = new String(res.bodyBytes(), "UTF-8");
-            logger.info("CALL ALI EXPRESS API response ------->>> body :" + expressJSON + "  statusCode : " + res.statusCode());
-            //状态码: 200 正常；400 URL无效；401 appCode错误； 403 次数用完； 500 API网管错误
-            //获取response的body
+		String expressJSON = null;
+		try {
+			logger.info(request.toString());
+			HttpResponse res = browser.sendRequest(request);
+			expressJSON = new String(res.bodyBytes(), "UTF-8");
+			logger.info("CALL ALI EXPRESS API response ------->>> body :" + expressJSON + "  statusCode : " + res.statusCode());
+			//状态码: 200 正常；400 URL无效；401 appCode错误； 403 次数用完； 500 API网管错误
+			//获取response的body
 
-            ExpressRspDTO expressResponse = gson.fromJson(expressJSON, ExpressRspDTO.class);
-            if (expressResponse.getStatus().equals("0")) {
-                expressInfo = expressResponse.getResult();
-                ExpressTrack mallExpressTrack = new ExpressTrack();
-                mallExpressTrack.setDeliveryStatus(expressInfo.getDeliverystatus());
-                mallExpressTrack.setExpressTrack(gson.toJson(expressInfo));
-                mallExpressTrack.setUpdateDate(new Date());
-                if (StringUtils.isEmpty(id)) {
-                    mallExpressTrack.setExpressNo(expressTrackDTO.getExpressNo());
-                    mallExpressTrack.setExpressCode(expressTrackDTO.getExpressCode());
-                    mallExpressTrack.setId(UUID.randomUUID().toString());
-                    mallExpressTrack.setCreateDate(new Date());
-                    expressTrackMapper.insertSelective(mallExpressTrack);
-                } else {
-                    mallExpressTrack.setId(id);
-                    expressTrackMapper.updateByPrimaryKeySelective(mallExpressTrack);
-                }
-                return expressInfo;
-            } else {
-                throw new Mall4cloudException("获取快递信息错误！");
-            }
-        } catch (Exception e) {
-            logger.error(e.getClass().getSimpleName(), e.getMessage());
-        }
-        return expressInfo;
-    }
+			ExpressRspDTO expressResponse = gson.fromJson(expressJSON, ExpressRspDTO.class);
+			if (expressResponse.getStatus().equals("0")) {
+				expressInfo = expressResponse.getResult();
+				ExpressTrack mallExpressTrack = new ExpressTrack();
+				mallExpressTrack.setDeliveryStatus(expressInfo.getDeliverystatus());
+				mallExpressTrack.setExpressTrack(gson.toJson(expressInfo));
+				mallExpressTrack.setUpdateDate(new Date());
+				if (StringUtils.isEmpty(id)) {
+					mallExpressTrack.setExpressNo(expressTrackDTO.getExpressNo());
+					mallExpressTrack.setExpressCode(expressTrackDTO.getExpressCode());
+					mallExpressTrack.setId(UUID.randomUUID().toString());
+					mallExpressTrack.setCreateDate(new Date());
+					expressTrackMapper.insertSelective(mallExpressTrack);
+				} else {
+					mallExpressTrack.setId(id);
+					expressTrackMapper.updateByPrimaryKeySelective(mallExpressTrack);
+				}
+				return expressInfo;
+			} else {
+				throw new Mall4cloudException("获取快递信息错误！");
+			}
+		} catch (Exception e) {
+			logger.error(e.getClass().getSimpleName(), e.getMessage());
+		}
+		return expressInfo;
+	}
 
-    @Override
-    public void doExpressOsSync() {
-        //todo：获取所有需要处理的已经发货的订单
-        ServerResponseEntity<List<OrderExpressBO>> deliveredOrderList = orderFeignClient.getDeliveredOrder();
-        if (!deliveredOrderList.isSuccess()) {
-            return;
-        } else {
-            List<OrderExpressBO> deliveredOrderListData = deliveredOrderList.getData();
+	@Override
+	public void doExpressOsSync() {
+		//todo：获取所有需要处理的已经发货的订单
+		ServerResponseEntity<List<OrderExpressBO>> deliveredOrderList = orderFeignClient.getDeliveredOrder();
+		if (!deliveredOrderList.isSuccess()) {
+			return;
+		} else {
+			List<OrderExpressBO> deliveredOrderListData = deliveredOrderList.getData();
 
-            List<Long> orderIdList = new ArrayList<>();
-            for (OrderExpressBO deliveredOrder : deliveredOrderListData) {
-                ExpressTrackDTO expressTrackDTO = new ExpressTrackDTO();
-                expressTrackDTO.setExpressCode(deliveredOrder.getSyncOsExpress());
-                expressTrackDTO.setExpressNo(deliveredOrder.getSyncOsExpressNo());
-                ExpressInfoDTO expressInfo = expressService.getExpressInfoByCodeAndNo(expressTrackDTO);
-                if (expressInfo != null) {
-                    String deliveryStatus = expressInfo.getDeliverystatus();
-                    String isSign = expressInfo.getIsSign();
-                    if (isSign.equals("1") && deliveryStatus.equals("3")) {
-                        //todo:这是签收的状态，签收后七天给用户增加积分，或者活动奖励
-                        orderIdList.add(deliveredOrder.getOrderId());
-                    }
-                }
-            }
+			List<Long> orderIdList = new ArrayList<>();
+			for (OrderExpressBO deliveredOrder : deliveredOrderListData) {
+				ExpressTrackDTO expressTrackDTO = new ExpressTrackDTO();
+				expressTrackDTO.setExpressCode(deliveredOrder.getSyncOsExpress());
+				expressTrackDTO.setExpressNo(deliveredOrder.getSyncOsExpressNo());
+				ExpressInfoDTO expressInfo = expressService.getExpressInfoByCodeAndNo(expressTrackDTO);
+				if (expressInfo != null) {
+					String deliveryStatus = expressInfo.getDeliverystatus();
+					String isSign = expressInfo.getIsSign();
+					if (isSign.equals("1") && deliveryStatus.equals("3")) {
+						//todo:这是签收的状态，签收后七天给用户增加积分，或者活动奖励
+						orderIdList.add(deliveredOrder.getOrderId());
+					}
+				}
+			}
 
-            try {
-                //todo：更新订单的状态
-                orderFeignClient.updateExpressOrder(orderIdList);
-                integralPointUpdateTemplate.syncSend(RocketMqConstant.INTEGRAL_POINT_UPDATE_TOPIC,new GenericMessage<List<Long>>(orderIdList));
-            }catch (Exception e){
-                throw new Mall4cloudException("发放奖励过程出错");
-            }
-        }
-    }
+			try {
+				//todo：更新订单的状态
+				orderFeignClient.updateExpressOrder(orderIdList);
+				integralPointUpdateTemplate.syncSend(RocketMqConstant.INTEGRAL_POINT_UPDATE_TOPIC, new GenericMessage<List<Long>>(orderIdList));
+			} catch (Exception e) {
+				throw new Mall4cloudException("发放奖励过程出错");
+			}
+		}
+	}
 }

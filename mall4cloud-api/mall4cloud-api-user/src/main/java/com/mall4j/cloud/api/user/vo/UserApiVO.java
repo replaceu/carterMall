@@ -22,6 +22,9 @@ public class UserApiVO extends BaseVO{
     @ApiModelProperty("用户昵称")
     private String nickName;
 
+    @ApiModelProperty("手机")
+	private String mobile;
+
     @ApiModelProperty("头像图片路径")
 	@JsonSerialize(using = ImgJsonSerializer.class)
     private String pic;
@@ -29,7 +32,6 @@ public class UserApiVO extends BaseVO{
     @ApiModelProperty("状态 1 正常 0 无效")
     private Integer status;
 
-    @ApiModelProperty("是否创建过店铺")
 
 	/**
 	 * openId list
@@ -74,6 +76,14 @@ public class UserApiVO extends BaseVO{
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile == null ? null : mobile.trim();
 	}
 
 	@Override
