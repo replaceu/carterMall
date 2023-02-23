@@ -1,6 +1,7 @@
 package com.mall4j.cloud.firmware.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.alibaba.nacos.common.utils.StringUtils;
 import com.alibaba.nacos.common.utils.UuidUtils;
 import com.mall4j.cloud.api.auth.bo.UserInfoInTokenBO;
 import com.mall4j.cloud.api.auth.feign.TokenFeignClient;
@@ -18,10 +19,12 @@ import com.mall4j.cloud.firmware.model.ProductDevice;
 import com.mall4j.cloud.firmware.model.ProductDeviceInfo;
 import com.mall4j.cloud.firmware.model.ProductRegisterLog;
 import com.mall4j.cloud.firmware.service.FirmwareService;
+import com.mall4j.cloud.firmware.vo.H5UserProductDeviceVO;
 import com.mall4j.cloud.firmware.vo.ResultResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -89,12 +92,58 @@ public class FirmwareServiceImpl implements FirmwareService {
 					newRegisterLog.setImagePath(ImageConstants.defaultForeoImageUrl);
 				}
 				productRegisterLogMapper.insertSelective(newRegisterLog);
+				//todo:产品注册成功，给用户增加积分
+				updatePointFeignClient.updateUserPoint(userInfoBO.getUserId().toString(), "500", IntegralPointLogConstants.RefType.a_product_registration);
+				//todo:另起线程去调用os的产品注册接口并更新product_sku与succeed_os_registered
+				asyncFirmwareService.asyncOsRegister(productRegisterLog,userInfoBO.getUserId(),firmwareRegisterRequestDto.getEmail(),firmwareRegisterRequestDto.getSn());
+			}else {
+				//如果是已注册的产品又传了mac,需要判断有没有并进行更新
+				if (StringUtils.isBlank(productRegisterLog.getMac())&&!StringUtils.isBlank(firmwareRegisterRequestDto.getMac())){
+					productRegisterLog.setMac(firmwareRegisterRequestDto.getMac());
+					productRegisterLogMapper.updateSelective(productRegisterLog);
+				}
+				retResponse.setCode("63");
+				retResponse.setReturnMsg(MsgConstants.ufoRegisterExisted());
+				packageRetData(retResponse,productRegisterLog);
 			}
-			//todo:产品注册成功，给用户增加积分
-			updatePointFeignClient.updateUserPoint(userInfoBO.getUserId().toString(), "500", IntegralPointLogConstants.RefType.a_product_registration);
-			//todo:另起线程去调用os的产品注册接口并更新product_sku与succeed_os_registered
-			asyncFirmwareService.asyncOsRegister(productRegisterLog,userInfoBO.getUserId(),firmwareRegisterRequestDto.getEmail(),firmwareRegisterRequestDto.getSn());
+
+
 		}
-		return null;
+		return retResponse;
+	}
+
+	private void packageRetData(ResultResponseVO retResponse, ProductRegisterLog productRegisterLog) {
+		List<ProductDevice> allDeviceList = productDeviceMapper.selectAllProductDevice();
+		List<ProductRegisterLog> productRegisterLogList = new ArrayList<>();
+		productRegisterLogList.add(productRegisterLog);
+		List<H5UserProductDeviceVO> h5UserProductDeviceVOList = dataTranslateVO(productRegisterLogList,allDeviceList);
+	}
+
+	private List<H5UserProductDeviceVO> dataTranslateVO(List<ProductRegisterLog> productRegisterLogList, List<ProductDevice> allDeviceList) {
+		List<H5UserProductDeviceVO> retList = new ArrayList<>();
+		for (ProductRegisterLog productRegisterLog : productRegisterLogList) {
+			for (ProductDevice productDevice : allDeviceList) {
+				if (productRegisterLog.getProductLabel().equals(productDevice.getSkuCode())){
+					H5UserProductDeviceVO h5UserProductDeviceVO = new H5UserProductDeviceVO();
+					h5UserProductDeviceVO.setCoolingAble(productDevice.getCoolingAble());
+					h5UserProductDeviceVO.setCreateTime(productRegisterLog.getCreateTime());
+					h5UserProductDeviceVO.setEmailOrPhone(productRegisterLog.getEmail());
+					h5UserProductDeviceVO.setSkuSn(productRegisterLog.getSkuSn());
+					h5UserProductDeviceVO.setImageDevice(productDevice.getImageDevice());
+					h5UserProductDeviceVO.setImageDeviceH5(productDevice.getImageDeviceH5());
+					h5UserProductDeviceVO.setImageDeviceName(productDevice.getImageDeviceName());
+					h5UserProductDeviceVO.setImagePath(productRegisterLog.getImagePath());
+					h5UserProductDeviceVO.setName(productDevice.getName());
+					h5UserProductDeviceVO.setcName(productDevice.getcName());
+					h5UserProductDeviceVO.setcColor(productDevice.getCnColor());
+					h5UserProductDeviceVO.setEnName(productDevice.geteName());
+					h5UserProductDeviceVO.setEnColor(productDevice.getEnColor());
+					h5UserProductDeviceVO.setRgb(productDevice.getRgb());
+					h5UserProductDeviceVO.setCoverPicUrl(h5UserProductDeviceVO.getCoverPicUrl());
+					retList.add(h5UserProductDeviceVO);
+				}
+			}
+		}
+		return retList;
 	}
 }
