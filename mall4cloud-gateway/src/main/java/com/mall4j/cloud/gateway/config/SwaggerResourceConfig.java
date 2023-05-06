@@ -44,9 +44,7 @@ public class SwaggerResourceConfig implements SwaggerResourcesProvider {
 			if (routes.contains(routeDefinition.getId())) {
 				for (PredicateDefinition predicateDefinition : routeDefinition.getPredicates()) {
 					if (("Path").equalsIgnoreCase(predicateDefinition.getName())) {
-						resources
-								.add(swaggerResource(routeDefinition.getId(), predicateDefinition.getArgs()
-										.get(NameUtils.GENERATED_NAME_PREFIX + "0").replace("**", "v2/api-docs")));
+						resources.add(swaggerResource(routeDefinition.getId(), predicateDefinition.getArgs().get(NameUtils.GENERATED_NAME_PREFIX + "0").replace("**", "v2/api-docs")));
 					}
 				}
 			}
